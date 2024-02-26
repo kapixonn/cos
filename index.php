@@ -8,41 +8,47 @@
 </head>
 <body>
     <header>
-        <h1>breaddit</h1>
+        <h1>Nagłowek strony</h1>
     </header>
-    <div id="mid">
+    <div id="container">
         <?php
-        $db = new mysqli('localhost', 'root', '', 'breaddit');
-        $q = $db->prepare("Select post.id, post.image, post.title, post.timestamp, user.email
-        FROM post
-        INNER JOIN user ON post.author = user.ID");
+        
+        $db = new mysqli('localhost', 'root', '', 'cms');
+        
+        $q = $db->prepare("SELECT post.id, post.imgUrl, post.title, 
+                                    post.timestamp, user.email 
+                            FROM `post` 
+                            INNER JOIN user ON post.author = user.ID
+                            ORDER BY post.timestamp DESC;");
+        //wywołaj kwerendę
         $q->execute();
+        //pobierz dane
         $result = $q->get_result();
         while($row = $result->fetch_assoc()) {
-            echo '<div class="post">';
-            echo '<h2 class="posttitle">'.$row['title'].'</h2>';
-            echo '<h3 class="postauthor">'.$row['email'].'</h3>';
-            echo '<img src="'.$row['image'].'" alt="obrazekposta" class=postimage>';
-            echo '<p class=postdesc>Post Description </p>';
-            echo '<div class="postfooter">
-            <span class="postmeta">'.$row['timestamp'].'</span>
-            <span class="postscore">POINTS</span>
+            //$row to jeden wiersz z bazy danych
+            echo '<div class="post-block">';
+            echo '<h2 class="post-title">'.$row['title'].'</h3>';
+            echo '<h3 class="post-author">'.$row['email'].'</h6>';
+            echo '<img src="'.$row['imgUrl'].'" alt="obrazek posta" class="post-image">';
+            echo '<p class="post-description">TODO: Opis posta</p>';
+            echo '<div class="post-footer">
+                <span class="post-meta">'.$row['timestamp'].'</span>
+                <span class="post-score">TODO: punkty</span>
                 </div>';
-
-
-            echo '</div>';
+            echo '</div>'; //post-block
         }
         ?>
-        <!--<div class="post">
-            <h3 class="posttitle">Title</h3>
-            <h6 class="postauthor">Author</h6>
-            <img src="https://picsum.photos/800/600" alt="" class="postimage">
-            <p class="postdesc">Post Description</p>
-            <div class="postfooter">
-                <span class="postmeta">Date and time</span>
-                <span class="postscore">+ / -</span>
+
+        <!--<div class="post-block">
+            <h2 class="post-title">Tytuł posta</h3>
+            <h3 class="post-author">Autor posta</h6>
+            <img src="https://picsum.photos/800/600" alt="obrazek posta" class="post-image">
+            <p class="post-description">Opis posta</p>
+            <div class="post-footer">
+                <span class="post-meta">Data i czas</span>
+                <span class="post-score">+ i -</span>
             </div>
-        </div>
+            
         </div>
     -->
     </div>
